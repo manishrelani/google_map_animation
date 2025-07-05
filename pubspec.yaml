@@ -5,7 +5,8 @@ description: "A Flutter library for creating animated polylines and markers on G
 version: 1.0.0
 
 repository: https://github.com/manishrelani/google_map_animation
-documentation: https://github.com/yourusername/google_map_animation/blob/main/README.md
+issue_tracker: https://github.com/manishrelani/google_map_animation/issues
+documentation: https://github.com/manishrelani/google_map_animation/blob/main/README.md
 
 environment:
   sdk: ^3.8.1

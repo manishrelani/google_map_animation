@@ -1,6 +1,20 @@
 # Google Maps Animation Flutter Library
 
-A powerful Flutter library for creating smooth, customizable polyline and marker animations on Google Maps. Bring your maps to life with beautiful animations that enhance user experience.
+A Flutter library for creating smooth, customizable polyline and marker animations directly on Google Maps. Bring your maps to life with beautiful animations that enhance user experience.
+
+## ⚠️ Important Note
+
+This library focuses **exclusively** on animating polylines and markers on Google Maps. Google Maps configuration and setup is **out of scope** for this library. Before using this library, please ensure you have properly configured Google Maps in your Flutter project.
+
+For Google Maps setup instructions, refer to the [official Google Maps Flutter documentation](https://pub.dev/packages/google_maps_flutter).
+
+
+## Features
+
+- 🎨 **Polyline Animations**: Snake animation, color transitions, and custom effects
+- 📍 **Marker Animations**: Smooth marker transitions and movements
+- ⚡ **Performance Optimized**: Efficient animations that don't impact map performance
+- 🎛️ **Customizable**: Create your own animation effects
 
 
 ## Installation
@@ -9,8 +23,7 @@ Add this to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  google_map_animation: ^1.0.0
-  google_maps_flutter: ^2.12.3
+  google_map_animation: ^0.0.1
 ```
 
 ## Quick Start
@@ -131,16 +144,16 @@ animationController?.updateMarkers(markers);
 Use `MapAnimationUtils` to create optimized polylines:
 
 ```dart
-final optimizedPoints = MapAnimationUtils.generateEquidistantPolylineByDuration(
-  path: originalPoints,
-  duration: Duration(seconds: 5),
-  frameIntervalMs: 16, // 60 FPS
-);
 
 final polyline = AnimatedPolyline(
   polyline: Polyline(
     polylineId: PolylineId('optimized'),
-    points: optimizedPoints,
+     points: [
+      LatLng(37.7749, -122.4194),
+      LatLng(37.7849, -122.4094),
+      LatLng(37.7949, -122.3994),
+      // Add more points...
+    ],
     color: Colors.purple,
     width: 4,
   ),
@@ -173,6 +186,23 @@ class CustomAnimator extends PolylineAnimator {
 ```
 
 
+
+### MapAnimationController
+
+Main controller for managing animations:
+
+```dart
+MapAnimationController({
+  required int mapId,
+  required TickerProvider vsync,
+  Set<Marker> markers = const {},
+  Set<AnimatedPolyline> polylines = const {},
+  Duration markersAnimationDuration = const Duration(milliseconds: 2000),
+  MarkerListener? markerListener,
+})
+```
+
+
 ## Animation Types
 
 ### Built-in Animators
@@ -193,25 +223,6 @@ All animators support these properties:
 - `reverse`: Whether to reverse the animation
 
 
-
-## API Reference
-
-### MapAnimationController
-
-Main controller for managing animations:
-
-```dart
-MapAnimationController({
-  required int mapId,
-  required TickerProvider vsync,
-  Set<Marker> markers = const {},
-  Set<AnimatedPolyline> polylines = const {},
-  Duration markersAnimationDuration = const Duration(milliseconds: 2000),
-  MarkerListener? markerListener,
-})
-```
-
-
 ## License
 
 This project is licensed under the BSD License - see the [LICENSE](LICENSE) file for details.
@@ -219,4 +230,4 @@ This project is licensed under the BSD License - see the [LICENSE](LICENSE) file
 
 
 
-Made with ❤️ by Manish Relani for the Flutter community
+Made with ❤️ by [Manish Relani](https://github.com/manishrelani) for the Flutter community

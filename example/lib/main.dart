@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_map_animation/google_map_animation.dart';
@@ -46,48 +45,88 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
   GoogleMapController? mapController;
   MapAnimationController? mapAnimationController;
 
-  int _markerCounter = 1;
-
   Timer? _timer;
 
-  final Map<MarkerId, Marker> _markers = {};
+  final cordinatesList = [
+    ListCycler(coordinates1),
+    ListCycler(coordinates2),
+    ListCycler(coordinates3),
+    ListCycler(coordinates1.reversed.toList()),
+    ListCycler(coordinates2.reversed.toList()),
+    ListCycler(coordinates3.reversed.toList()),
+  ];
+
+  late final Map<MarkerId, Marker> _markers = {
+    const MarkerId('0'): Marker(
+      markerId: const MarkerId('0'),
+      position: cordinatesList[0].currentValue,
+      rotation: 0,
+    ),
+    const MarkerId('1'): Marker(
+      markerId: const MarkerId('1'),
+      position: cordinatesList[1].currentValue,
+      rotation: 90,
+    ),
+    const MarkerId('2'): Marker(
+      markerId: const MarkerId('2'),
+      position: cordinatesList[2].currentValue,
+      rotation: 180,
+    ),
+    const MarkerId('3'): Marker(
+      markerId: const MarkerId('3'),
+      position: cordinatesList[3].currentValue,
+      rotation: 270,
+    ),
+    const MarkerId('4'): Marker(
+      markerId: const MarkerId('4'),
+      position: cordinatesList[4].currentValue,
+      rotation: 0,
+    ),
+    const MarkerId('5'): Marker(
+      markerId: const MarkerId('5'),
+      position: cordinatesList[5].currentValue,
+      rotation: 90,
+    ),
+  };
 
   final Set<AnimatedPolyline> _polylines = {
     AnimatedPolyline(
       polyline: Polyline(
-        polylineId: PolylineId('1'),
+        polylineId: PolylineId('front'),
         color: Colors.black,
         width: 2,
         points: MapAnimationUtils.generateEquidistantPolylineByDuration(
-          path: snackPolyline,
-          duration: const Duration(seconds: 3),
+          path: coordinates1,
+          duration: const Duration(seconds: 4),
         ),
       ),
       polylineAnimator: FadeInProgressiveAnimator(
         repeat: true,
         curve: Curves.linear,
-        duration: const Duration(seconds: 6),
+        duration: const Duration(seconds: 4),
+        delayStart: const Duration(seconds: 1),
       ),
     ),
     AnimatedPolyline(
-      polyline: Polyline(polylineId: const PolylineId('2'), color: Colors.red, width: 2, points: colorPolyline),
-      polylineAnimator: ColorTransitionAnimation(
-        duration: const Duration(seconds: 10),
-        repeat: true,
-        colors: [Colors.red, Colors.green, Colors.blue, Colors.yellow],
+      polyline: Polyline(
+        polylineId: PolylineId('back'),
+        color: Colors.grey,
+        width: 2,
+        points: coordinates1,
       ),
     ),
   };
 
   @override
   void initState() {
-    _timer = Timer.periodic(const Duration(seconds: 5), (_) {
-      _markers.updateAll((markerId, marker) {
-        return marker.copyWith(
-          positionParam: generateRandomLatLngInRadius(marker.position, 1000),
-          rotationParam: Random().nextInt(360).toDouble(),
+    _timer = Timer.periodic(const Duration(seconds: 2), (_) {
+      for (var i = 0; i < cordinatesList.length; i++) {
+        _markers.update(
+          MarkerId('${i + 1}'),
+          (marker) => marker.copyWith(positionParam: cordinatesList[i].nextValue),
         );
-      });
+      }
+
       mapAnimationController?.updateMarkers(_markers.values.toSet());
     });
     super.initState();
@@ -104,118 +143,50 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Map Screen', style: TextStyle(fontWeight: FontWeight.w500)),
+        title: const Text(
+          'Map Screen',
+          style: TextStyle(fontWeight: FontWeight.w500),
+        ),
       ),
       body: GoogleMap(
-        initialCameraPosition: const CameraPosition(target: LatLng(12.97167, 77.59475), zoom: 16.0),
+        initialCameraPosition: const CameraPosition(target: LatLng(23.02246, 72.59891), zoom: 16.0),
 
         onMapCreated: (controller) {
           mapController = controller;
-          mapAnimationController = MapAnimationController(mapId: controller.mapId, vsync: this, polylines: _polylines);
+          mapAnimationController = MapAnimationController(
+            mapId: controller.mapId,
+            vsync: this,
+            // polylines: _polylines,
+          );
         },
       ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          FloatingActionButton(
-            heroTag: 'add',
-            onPressed: _addMarker,
-            tooltip: 'Add Marker',
-            child: const Icon(Icons.add_location),
-          ),
-          const SizedBox(height: 12),
-          FloatingActionButton(
-            heroTag: 'remove',
-            onPressed: _removeMarker,
-            tooltip: 'Remove Marker',
-            child: const Icon(Icons.remove_circle),
-          ),
-
-          FloatingActionButton(
-            heroTag: 'add_polyline',
-            onPressed: onAddPolyline,
-            tooltip: 'Add Polyline',
-            child: const Icon(Icons.add_road),
-          ),
-          const SizedBox(height: 12),
-          FloatingActionButton(
-            heroTag: 'remove_polyline',
-            onPressed: onRemovePolyline,
-            tooltip: 'Remove Polyline',
-            child: const Icon(Icons.remove_road),
-          ),
-        ],
-      ),
     );
   }
+}
 
-  void _addMarker() {
-    final markerId = MarkerId(_markerCounter.toString());
-    final position = generateRandomLatLngInRadius(const LatLng(12.97167, 77.59475), 1000);
-    final marker = Marker(markerId: markerId, position: position, rotation: Random().nextInt(360).toDouble());
-    _markers[markerId] = marker;
+class ListCycler<E> {
+  final List<E> list;
+  int _currentIndex = 0;
 
-    mapAnimationController?.updateMarkers(_markers.values.toSet());
+  bool _isReversed = false;
 
-    _markerCounter++;
-  }
+  ListCycler(this.list);
 
-  void _removeMarker() {
-    if (_markers.isNotEmpty) {
-      final lastKey = _markers.keys.last;
-      _markers.remove(lastKey);
+  E get nextValue {
+    if (_currentIndex == list.length - 1) {
+      _isReversed = true;
+    } else if (_currentIndex == 0) {
+      _isReversed = false;
     }
-  }
 
-  void onAddPolyline() {
-    final polylineId = PolylineId('polyline_${_polylines.length + 1}');
-
-    final polyline = AnimatedPolyline(
-      polyline: Polyline(
-        polylineId: polylineId,
-        color: Colors.purple,
-        width: 4,
-        points: MapAnimationUtils.generateEquidistantPolylineByDuration(
-          path: polylineList2,
-          duration: const Duration(seconds: 5),
-        ),
-      ),
-      polylineAnimator: SnackAnimator(repeat: true, curve: Curves.linear, duration: const Duration(seconds: 5)),
-    );
-
-    _polylines.add(polyline);
-    mapAnimationController?.updatePolylines(_polylines);
-  }
-
-  void onRemovePolyline() {
-    if (_polylines.isNotEmpty) {
-      final lastPolyline = _polylines.last;
-      _polylines.remove(lastPolyline);
-      mapAnimationController?.updatePolylines(_polylines);
+    if (_isReversed) {
+      _currentIndex--;
+    } else {
+      _currentIndex++;
     }
+
+    return list[_currentIndex];
   }
 
-  LatLng generateRandomLatLngInRadius(LatLng center, double radiusInMeters) {
-    final random = Random();
-
-    final double distance = radiusInMeters * sqrt(random.nextDouble());
-    final double angle = random.nextDouble() * 2 * pi;
-
-    final double deltaLat = distance / 111320.0;
-    final double deltaLng = distance / (111320.0 * cos(center.latitude * pi / 180));
-
-    final double newLat = center.latitude + deltaLat * cos(angle);
-    final double newLng = center.longitude + deltaLng * sin(angle);
-
-    return LatLng(newLat, newLng);
-  }
-
-  Stream<LatLng> generateLatLngStream(LatLng startPoint, double radiusInMeters, Duration interval) async* {
-    LatLng lastLatLng = startPoint;
-    while (true) {
-      await Future.delayed(interval);
-      lastLatLng = generateRandomLatLngInRadius(lastLatLng, radiusInMeters);
-      yield lastLatLng;
-    }
-  }
+  E get currentValue => list[_currentIndex];
 }

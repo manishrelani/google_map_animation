@@ -17,6 +17,7 @@ dependencies:
   google_maps_flutter: ^2.12.3
   google_maps_flutter_platform_interface: ^2.12.1
 
+
   google_map_animation:
     path: ../
 

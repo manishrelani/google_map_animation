@@ -123,7 +123,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     _timer = Timer.periodic(const Duration(seconds: 2), (_) {
       for (var i = 0; i < cordinatesList.length; i++) {
         _markers.update(
-          MarkerId('${i + 1}'),
+          MarkerId('$i'),
           (marker) => marker.copyWith(positionParam: cordinatesList[i].nextValue),
         );
       }

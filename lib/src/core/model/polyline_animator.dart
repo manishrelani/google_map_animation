@@ -9,6 +9,14 @@ abstract class PolylineAnimator {
   final bool repeat;
   final bool reverse;
 
+  /// Delay before the animation starts
+  /// This is usefull for repeating animations where you want to wait before starting the next cycle
+  final Duration delayStart;
+
+  /// Delay after the animation ends
+  /// This is useful for repeating animations where you want to wait before starting the next cycle
+  final Duration delayEnd;
+
   /// Number of times to repeat the animation (null means infinite)
   final int? repeatCount;
 
@@ -18,6 +26,8 @@ abstract class PolylineAnimator {
     this.repeat = false,
     this.repeatCount,
     this.reverse = false,
+    this.delayStart = Duration.zero,
+    this.delayEnd = Duration.zero,
   });
 
   Polyline animate(Polyline polyline, double progress);
@@ -48,6 +58,7 @@ abstract class PolylineAnimator {
 
   @override
   String toString() {
-    return 'PolylineAnimator{duration: $duration, curve: $curve, repeat: $repeat, repeatCount: $repeatCount, reverse: $reverse}';
+    return 'PolylineAnimator(duration: $duration, curve: $curve, repeat: $repeat, repeatCount: $repeatCount,'
+        'reverse: $reverse, delayStart: $delayStart, delayEnd: $delayEnd)';
   }
 }

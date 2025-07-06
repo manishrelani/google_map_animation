@@ -7,7 +7,11 @@ class FadeInProgressiveAnimator extends PolylineAnimator {
   const FadeInProgressiveAnimator({
     super.duration = const Duration(seconds: 5),
     super.curve = Curves.ease,
-    super.repeat = false,
+    super.repeat = true,
+    super.repeatCount,
+    super.reverse,
+    super.delayStart,
+    super.delayEnd,
   });
 
   @override

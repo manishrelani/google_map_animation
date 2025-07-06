@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../animations/delayed_curved_animaiton.dart';
 import '../model/polyline_animator.dart';
 
 /// Controls the animation of a polyline.
@@ -33,10 +34,20 @@ class PolylineAnimationController {
       ..addListener(_listener)
       ..addStatusListener(_statusListener);
 
-    _curvedAnimation = CurvedAnimation(
-      parent: _controller,
-      curve: polylineAnimator.curve,
-    );
+    if (polylineAnimator.delayStart != Duration.zero || polylineAnimator.delayEnd != Duration.zero) {
+      _curvedAnimation = DelayedCurvedAnimation(
+        controller: _controller,
+        totalDuration: polylineAnimator.duration + polylineAnimator.delayStart + polylineAnimator.delayEnd,
+        delayStart: polylineAnimator.delayStart,
+        delayEnd: polylineAnimator.delayEnd,
+        curve: polylineAnimator.curve,
+      );
+    } else {
+      _curvedAnimation = CurvedAnimation(
+        parent: _controller,
+        curve: polylineAnimator.curve,
+      );
+    }
 
     if (polylineAnimator.repeat) {
       _controller.repeat(
@@ -59,7 +70,7 @@ class PolylineAnimationController {
   }
 
   void _statusListener(AnimationStatus status) {
-    if (status == AnimationStatus.completed || status == AnimationStatus.dismissed) {
+    if (status == AnimationStatus.completed) {
       polylineAnimator.onAnimationStop();
     }
   }

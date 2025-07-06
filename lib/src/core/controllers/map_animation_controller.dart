@@ -117,6 +117,10 @@ final class MapAnimationController {
     }
   }
 
+  /// Add/update or remove polylines on the map
+  /// This method will handle both animated and non-animated polylines.
+  /// If a polyline has an animator, it will be animated.
+  /// If not, it will be updated directly on the map.
   void updatePolylines(Set<AnimatedPolyline> updatedPolylines) {
     final newPolyLineById = keyByPolylineId(updatedPolylines.map((p) => p.polyline));
 
@@ -144,6 +148,13 @@ final class MapAnimationController {
         }
       }
     }
+  }
+
+  /// Update Polyline directly on the map
+  /// This method is used to update a static polyline that does not have an animator.
+  /// Useful for update the polyline on marker update using [markerListener].
+  void updateStaticPolyline(Polyline polyline) {
+    _updatePolyline(polyline);
   }
 
   void _removeMarker(Set<MarkerId> markerIds) {

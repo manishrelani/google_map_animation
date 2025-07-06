@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../../utils/spherical_util.dart';
+import '../utils/spherical_util.dart';
 
 class LocationTween extends Tween<LatLng> {
   LocationTween({required LatLng begin, required LatLng end}) : super(begin: begin, end: end);

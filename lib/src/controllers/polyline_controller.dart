@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../animations/delayed_curved_animaiton.dart';
-import '../model/polyline_animator.dart';
+import '../animator/base/polyline_animator.dart';
 
 /// Controls the animation of a polyline.
 ///

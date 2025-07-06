@@ -1,6 +1,6 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../../../google_map_animation.dart';
+import '../../google_map_animation.dart';
 
 class AnimatedPolyline {
   final Polyline polyline;

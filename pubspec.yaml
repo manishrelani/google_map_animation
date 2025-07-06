@@ -27,14 +27,11 @@ flutter:
 
 # Add topics for better discoverability
 topics:
-  - google-maps
-  - animation
-  - markers
+  - map-animation
   - animated-markers
   - animated-polylines
-  - polyline
-  - flutter
-  - maps
+  - animated-bearings
+
 
 
 

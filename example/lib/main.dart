@@ -56,14 +56,18 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     AnimatedPolyline(
       polyline: Polyline(
         polylineId: PolylineId('1'),
-        color: Colors.blue,
+        color: Colors.black,
         width: 2,
         points: MapAnimationUtils.generateEquidistantPolylineByDuration(
           path: snackPolyline,
           duration: const Duration(seconds: 3),
         ),
       ),
-      polylineAnimator: SnackAnimator(repeat: true, curve: Curves.linear, duration: const Duration(seconds: 6)),
+      polylineAnimator: FadeInProgressiveAnimator(
+        repeat: true,
+        curve: Curves.linear,
+        duration: const Duration(seconds: 6),
+      ),
     ),
     AnimatedPolyline(
       polyline: Polyline(polylineId: const PolylineId('2'), color: Colors.red, width: 2, points: colorPolyline),

@@ -40,7 +40,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  google_map_animation: ^1.0.0
+  google_map_animation: ^0.0.1
 ```
 
 Then run:
@@ -186,6 +186,8 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
-Made with ❤️ by [Manish Relani](https://github.com/manishrelani) for the Flutter community
+Made with ❤️ by [Manish Relani](www.linkedin.com/in/manish-relani) for the Flutter community
 
 If this library helped you, please give it a ⭐ on [GitHub](https://github.com/manishrelani/google_map_animation) 
+
+<img src="https://visitor-badge.laobi.icu/badge?page_id=manishrelani.google_map_animation" style="display: none;" alt="Visitor Count" />

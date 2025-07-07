@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../utils/spherical_util.dart';
 
 class BearingTween extends Tween<double> {
-  BearingTween({required double begin, required double end}) : super(begin: begin, end: end);
+  BearingTween({required double begin, required double end})
+    : super(begin: begin, end: end);
 
   @override
   double get begin => super.begin!;

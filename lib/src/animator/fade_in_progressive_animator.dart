@@ -17,7 +17,9 @@ class FadeInProgressiveAnimator extends PolylineAnimator {
   @override
   Polyline animate(Polyline polyline, double progress) {
     if (progress <= 0.3) {
-      return polyline.copyWith(colorParam: polyline.color.withValues(alpha: progress / 0.3));
+      return polyline.copyWith(
+        colorParam: polyline.color.withValues(alpha: progress / 0.3),
+      );
     } else {
       final animationProgress = (progress - 0.3) / 0.7;
       final startIndex = (polyline.points.length * animationProgress).round();

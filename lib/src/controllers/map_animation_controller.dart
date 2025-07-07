@@ -71,7 +71,10 @@ final class MapAnimationController {
 
     for (var i in polylines) {
       if (i.polylineAnimator != null) {
-        _animatedPolylineManager.push(polyline: i.polyline, polylineAnimator: i.polylineAnimator!);
+        _animatedPolylineManager.push(
+          polyline: i.polyline,
+          polylineAnimator: i.polylineAnimator!,
+        );
       } else {
         // If no animation is provided, add the polyline directly to the map
         _polylines[i.polyline.polylineId] = i.polyline.clone();
@@ -88,7 +91,9 @@ final class MapAnimationController {
     final oldIds = _markers.keys.toSet();
     final newIds = newMarkersById.keys.toSet();
 
-    final removedIds = oldIds.difference(newIds); // Markers that no longer exist
+    final removedIds = oldIds.difference(
+      newIds,
+    ); // Markers that no longer exist
     final addedIds = newIds.difference(oldIds); // Newly added markers
 
     if (removedIds.isNotEmpty) {
@@ -122,7 +127,9 @@ final class MapAnimationController {
   /// If a polyline has an animator, it will be animated.
   /// If not, it will be updated directly on the map.
   void updatePolylines(Set<AnimatedPolyline> updatedPolylines) {
-    final newPolyLineById = keyByPolylineId(updatedPolylines.map((p) => p.polyline));
+    final newPolyLineById = keyByPolylineId(
+      updatedPolylines.map((p) => p.polyline),
+    );
 
     final oldIds = _polylines.keys.toSet();
     final newIds = newPolyLineById.keys.toSet();
@@ -137,7 +144,10 @@ final class MapAnimationController {
     if (updatedPolylines.isNotEmpty) {
       for (final p in updatedPolylines) {
         if (p.polylineAnimator != null) {
-          _animatedPolylineManager.push(polyline: p.polyline, polylineAnimator: p.polylineAnimator!);
+          _animatedPolylineManager.push(
+            polyline: p.polyline,
+            polylineAnimator: p.polylineAnimator!,
+          );
         } else {
           final poly = p.polyline;
           _updatePolyline(poly);
@@ -196,14 +206,20 @@ final class MapAnimationController {
     _updatePolylinesOnMap(prevPolyline, _polylines.values.toSet());
   }
 
-  Future<void> _updateMarkersOnMap(Set<Marker> previous, Set<Marker> current) async {
+  Future<void> _updateMarkersOnMap(
+    Set<Marker> previous,
+    Set<Marker> current,
+  ) async {
     GoogleMapsFlutterPlatform.instance.updateMarkers(
       MarkerUpdates.from(previous, current),
       mapId: mapId,
     );
   }
 
-  Future<void> _updatePolylinesOnMap(Set<Polyline> previous, Set<Polyline> current) async {
+  Future<void> _updatePolylinesOnMap(
+    Set<Polyline> previous,
+    Set<Polyline> current,
+  ) async {
     GoogleMapsFlutterPlatform.instance.updatePolylines(
       PolylineUpdates.from(previous, current),
       mapId: mapId,

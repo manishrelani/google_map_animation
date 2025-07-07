@@ -10,11 +10,14 @@ import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platf
 import 'data.dart';
 
 void main() async {
-  final GoogleMapsFlutterPlatform mapsImplementation = GoogleMapsFlutterPlatform.instance;
+  final GoogleMapsFlutterPlatform mapsImplementation =
+      GoogleMapsFlutterPlatform.instance;
   try {
     if (mapsImplementation is GoogleMapsFlutterAndroid) {
       WidgetsFlutterBinding.ensureInitialized();
-      await mapsImplementation.initializeWithRenderer(AndroidMapRenderer.legacy);
+      await mapsImplementation.initializeWithRenderer(
+        AndroidMapRenderer.legacy,
+      );
     }
   } catch (e) {
     debugPrint('Error initializing Google Maps: $e');
@@ -29,7 +32,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      ),
       home: MapScreen(),
     );
   }
@@ -124,7 +129,8 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
       for (var i = 0; i < cordinatesList.length; i++) {
         _markers.update(
           MarkerId('$i'),
-          (marker) => marker.copyWith(positionParam: cordinatesList[i].nextValue),
+          (marker) =>
+              marker.copyWith(positionParam: cordinatesList[i].nextValue),
         );
       }
 
@@ -150,7 +156,10 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
         ),
       ),
       body: GoogleMap(
-        initialCameraPosition: const CameraPosition(target: LatLng(23.02246, 72.59891), zoom: 16.0),
+        initialCameraPosition: const CameraPosition(
+          target: LatLng(23.02246, 72.59891),
+          zoom: 16.0,
+        ),
         onMapCreated: (controller) {
           mapController = controller;
           mapAnimationController = MapAnimationController(

@@ -31,12 +31,13 @@ class AnimatedPolylineManager {
     required Polyline polyline,
     required PolylineAnimator polylineAnimator,
   }) {
-    PolylineAnimationController createController() => PolylineAnimationController(
-      vsync: _vsync,
-      polylineListener: _listener,
-      polylineAnimator: polylineAnimator,
-      polyline: polyline,
-    );
+    PolylineAnimationController createController() =>
+        PolylineAnimationController(
+          vsync: _vsync,
+          polylineListener: _listener,
+          polylineAnimator: polylineAnimator,
+          polyline: polyline,
+        );
 
     final controller = _controllers[polyline.polylineId];
 

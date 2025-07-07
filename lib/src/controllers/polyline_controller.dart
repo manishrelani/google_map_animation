@@ -30,14 +30,19 @@ class PolylineAnimationController {
   }
 
   void _initialize() {
-    _controller = AnimationController(vsync: vsync, duration: polylineAnimator.duration)
-      ..addListener(_listener)
-      ..addStatusListener(_statusListener);
+    _controller =
+        AnimationController(vsync: vsync, duration: polylineAnimator.duration)
+          ..addListener(_listener)
+          ..addStatusListener(_statusListener);
 
-    if (polylineAnimator.delayStart != Duration.zero || polylineAnimator.delayEnd != Duration.zero) {
+    if (polylineAnimator.delayStart != Duration.zero ||
+        polylineAnimator.delayEnd != Duration.zero) {
       _curvedAnimation = DelayedCurvedAnimation(
         controller: _controller,
-        totalDuration: polylineAnimator.duration + polylineAnimator.delayStart + polylineAnimator.delayEnd,
+        totalDuration:
+            polylineAnimator.duration +
+            polylineAnimator.delayStart +
+            polylineAnimator.delayEnd,
         delayStart: polylineAnimator.delayStart,
         delayEnd: polylineAnimator.delayEnd,
         curve: polylineAnimator.curve,

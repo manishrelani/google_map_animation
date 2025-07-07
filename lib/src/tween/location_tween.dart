@@ -4,7 +4,8 @@ import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platf
 import '../utils/spherical_util.dart';
 
 class LocationTween extends Tween<LatLng> {
-  LocationTween({required LatLng begin, required LatLng end}) : super(begin: begin, end: end);
+  LocationTween({required LatLng begin, required LatLng end})
+    : super(begin: begin, end: end);
 
   @override
   LatLng get begin => super.begin!;

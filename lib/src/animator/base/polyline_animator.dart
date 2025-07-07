@@ -54,7 +54,11 @@ abstract class PolylineAnimator {
 
   @override
   int get hashCode =>
-      duration.hashCode ^ curve.hashCode ^ repeat.hashCode ^ (repeatCount?.hashCode ?? 0) ^ reverse.hashCode;
+      duration.hashCode ^
+      curve.hashCode ^
+      repeat.hashCode ^
+      (repeatCount?.hashCode ?? 0) ^
+      reverse.hashCode;
 
   @override
   String toString() {

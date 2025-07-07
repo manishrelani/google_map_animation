@@ -15,7 +15,10 @@ final class MapAnimationUtils {
 
     double totalDistance = 0;
     for (int i = 0; i < path.length - 1; i++) {
-      totalDistance += SphericalUtil.computeDistanceBetween(path[i], path[i + 1]);
+      totalDistance += SphericalUtil.computeDistanceBetween(
+        path[i],
+        path[i + 1],
+      );
     }
 
     int steps = duration.inMilliseconds ~/ frameIntervalMs;

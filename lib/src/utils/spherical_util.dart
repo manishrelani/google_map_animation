@@ -18,7 +18,10 @@ class SphericalUtil {
     final toLat = MathUtil.toRadians(to.latitude);
     final toLng = MathUtil.toRadians(to.longitude);
     final dLng = toLng - fromLng;
-    final heading = atan2(sin(dLng) * cos(toLat), cos(fromLat) * sin(toLat) - sin(fromLat) * cos(toLat) * cos(dLng));
+    final heading = atan2(
+      sin(dLng) * cos(toLat),
+      cos(fromLat) * sin(toLat) - sin(fromLat) * cos(toLat) * cos(dLng),
+    );
 
     return MathUtil.wrap(MathUtil.toDegrees(heading), -180, 180);
   }
@@ -38,10 +41,17 @@ class SphericalUtil {
     final sinDistance = sin(distance);
     final sinFromLat = sin(fromLat);
     final cosFromLat = cos(fromLat);
-    final sinLat = cosDistance * sinFromLat + sinDistance * cosFromLat * cos(heading);
-    final dLng = atan2(sinDistance * cosFromLat * sin(heading), cosDistance - sinFromLat * sinLat);
+    final sinLat =
+        cosDistance * sinFromLat + sinDistance * cosFromLat * cos(heading);
+    final dLng = atan2(
+      sinDistance * cosFromLat * sin(heading),
+      cosDistance - sinFromLat * sinLat,
+    );
 
-    return LatLng(MathUtil.toDegrees(asin(sinLat)).toDouble(), MathUtil.toDegrees(fromLng + dLng).toDouble());
+    return LatLng(
+      MathUtil.toDegrees(asin(sinLat)).toDouble(),
+      MathUtil.toDegrees(fromLng + dLng).toDouble(),
+    );
   }
 
   /// Returns the location of origin when provided with a LatLng destination,
@@ -82,8 +92,12 @@ class SphericalUtil {
       return null;
     }
     final fromLngRadians =
-        MathUtil.toRadians(to.longitude) - atan2(n3, n1 * cos(fromLatRadians) - n2 * sin(fromLatRadians));
-    return LatLng(MathUtil.toDegrees(fromLatRadians).toDouble(), MathUtil.toDegrees(fromLngRadians).toDouble());
+        MathUtil.toRadians(to.longitude) -
+        atan2(n3, n1 * cos(fromLatRadians) - n2 * sin(fromLatRadians));
+    return LatLng(
+      MathUtil.toDegrees(fromLatRadians).toDouble(),
+      MathUtil.toDegrees(fromLngRadians).toDouble(),
+    );
   }
 
   /// Returns the LatLng which lies the given fraction of the way between the
@@ -122,7 +136,10 @@ class SphericalUtil {
     final lat = atan2(z, sqrt(x * x + y * y));
     final lng = atan2(y, x);
 
-    return LatLng(MathUtil.toDegrees(lat).toDouble(), MathUtil.toDegrees(lng).toDouble());
+    return LatLng(
+      MathUtil.toDegrees(lat).toDouble(),
+      MathUtil.toDegrees(lng).toDouble(),
+    );
   }
 
   /// Returns distance on the unit sphere; the arguments are in radians.
@@ -139,7 +156,8 @@ class SphericalUtil {
   );
 
   /// Returns the distance between two LatLngs, in meters.
-  static num computeDistanceBetween(LatLng from, LatLng to) => computeAngleBetween(from, to) * earthRadius;
+  static num computeDistanceBetween(LatLng from, LatLng to) =>
+      computeAngleBetween(from, to) * earthRadius;
 
   /// Returns the length of the given path, in meters, on Earth.
   static num computeLength(List<LatLng> path) {
@@ -174,7 +192,8 @@ class SphericalUtil {
   /// "inside" is the surface that does not contain the South Pole.
   /// @param path A closed path.
   /// @return The loop's area in square meters.
-  static num computeSignedArea(List<LatLng> path) => _computeSignedArea(path, earthRadius);
+  static num computeSignedArea(List<LatLng> path) =>
+      _computeSignedArea(path, earthRadius);
 
   /// Returns the signed area of a closed path on a sphere of given radius.
   /// The computed area uses the same units as the radius squared.

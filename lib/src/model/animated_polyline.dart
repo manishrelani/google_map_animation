@@ -22,7 +22,9 @@ class AnimatedPolyline {
       return false;
     }
 
-    return other is AnimatedPolyline && polyline == other.polyline && polylineAnimator == other.polylineAnimator;
+    return other is AnimatedPolyline &&
+        polyline == other.polyline &&
+        polylineAnimator == other.polylineAnimator;
   }
 
   @override

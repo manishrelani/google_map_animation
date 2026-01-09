@@ -9,6 +9,7 @@ class AnimatedMarkersManager {
     required Duration duration,
     required this.onUpdateMarkers,
     required this.onRemoveMarkers,
+    required this.useBearingFromMarker,
   }) {
     // 16.67 ms per frame for 60 FPS (1000 ms / 60 FPS) ~= 16.67 ms
     totalFrames = (duration.inMilliseconds / 16.67).round();
@@ -21,6 +22,8 @@ class AnimatedMarkersManager {
   late final int totalFrames;
   late final AnimationController _animationController;
 
+  final bool useBearingFromMarker;
+
   final ValueChanged<Set<Marker>> onUpdateMarkers;
   final ValueChanged<Set<MarkerId>> onRemoveMarkers;
 
@@ -30,13 +33,17 @@ class AnimatedMarkersManager {
 
   int _lastFrameIndex = -1;
 
-  bool get isAnimating => _animationController.isAnimating;
+  bool _isAnimating = false;
+  bool get isAnimating => _isAnimating;
 
   void push(Set<Marker> markers) {
+    if (markers.isEmpty) return;
+
     for (var marker in markers) {
       final controller = _controllers[marker.markerId] ??= MarkerController(
         marker: marker,
         animationController: _animationController,
+        useBearingFromMarker: useBearingFromMarker,
       );
 
       controller.pushToQueue(marker);
@@ -47,20 +54,16 @@ class AnimatedMarkersManager {
   }
 
   void _animateMarkers() {
-    bool animationRequired = false;
+    _isAnimating = true;
+
     for (var controller in _controllers.values) {
-      if (!animationRequired && controller.hasMarker) {
-        animationRequired = true;
-      }
       controller.setupNextMarker();
     }
 
-    if (animationRequired) {
-      _lastFrameIndex = -1;
+    _lastFrameIndex = -1;
 
-      _animationController.reset();
-      _animationController.forward();
-    }
+    _animationController.reset();
+    _animationController.forward();
   }
 
   void removeMarker(MarkerId markerId) {
@@ -84,12 +87,16 @@ class AnimatedMarkersManager {
   }
 
   void _statusListener(AnimationStatus status) {
-    if (status case (AnimationStatus.completed || AnimationStatus.dismissed)) {
+    if (status case (AnimationStatus.completed)) {
       _clearMarkersToBeRemoved();
 
       final isMarkerinQueue = _controllers.values.any((m) => m.hasMarker);
 
-      if (isMarkerinQueue) _animateMarkers();
+      if (isMarkerinQueue) {
+        _animateMarkers();
+      } else {
+        _isAnimating = false;
+      }
     }
   }
 

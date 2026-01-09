@@ -14,8 +14,8 @@ dependencies:
     sdk: flutter
   
   cupertino_icons: ^1.0.8
-  google_maps_flutter: ^2.12.3
-  google_maps_flutter_platform_interface: ^2.12.1
+  google_maps_flutter: ^2.14.0
+  google_maps_flutter_platform_interface: ^2.14.1
 
 
   google_map_animation:
@@ -32,6 +32,10 @@ dev_dependencies:
 flutter:
  
   uses-material-design: true
+
+  assets:
+    - assets/bike.png
+
 
   
   

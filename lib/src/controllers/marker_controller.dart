@@ -12,6 +12,8 @@ class MarkerController {
   late final LocationTween _locationTween;
   late final BearingTween _bearingTween;
 
+  final bool useBearingFromMarker;
+
   Marker _currentMarker;
   Marker get currentMarker => _currentMarker;
 
@@ -22,17 +24,12 @@ class MarkerController {
   MarkerController({
     required Marker marker,
     required AnimationController animationController,
+    required this.useBearingFromMarker,
   }) : _currentMarker = marker,
        _animationController = animationController {
-    _locationTween = LocationTween(
-      begin: marker.position,
-      end: marker.position,
-    );
+    _locationTween = LocationTween(begin: marker.position, end: marker.position);
 
-    _bearingTween = BearingTween(
-      begin: marker.rotation,
-      end: marker.rotation,
-    );
+    _bearingTween = BearingTween(begin: marker.rotation, end: marker.rotation);
 
     _locationTween.animate(_animationController);
     _bearingTween.animate(_animationController);
@@ -43,7 +40,7 @@ class MarkerController {
       return;
     }
 
-    _queue.addLast(m);
+    _queue.add(m);
   }
 
   void setupNextMarker() {
@@ -55,7 +52,10 @@ class MarkerController {
   void _setupTo(Marker m) {
     _currentMarker = m;
     _locationTween.swap(m.position);
-    _bearingTween.swap(_locationTween.bearing);
+
+    final bearing = useBearingFromMarker ? m.rotation : _locationTween.bearing;
+
+    _bearingTween.swap(bearing);
   }
 
   Marker animate(double t) {

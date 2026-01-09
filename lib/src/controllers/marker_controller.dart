@@ -40,7 +40,7 @@ class MarkerController {
       return;
     }
 
-    _queue.addLast(m);
+    _queue.add(m);
   }
 
   void setupNextMarker() {

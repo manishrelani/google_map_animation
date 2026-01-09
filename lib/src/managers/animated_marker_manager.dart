@@ -92,7 +92,11 @@ class AnimatedMarkersManager {
 
       final isMarkerinQueue = _controllers.values.any((m) => m.hasMarker);
 
-      if (isMarkerinQueue) _animateMarkers();
+      if (isMarkerinQueue) {
+        _animateMarkers();
+      } else {
+        _isAnimating = false;
+      }
     }
   }
 

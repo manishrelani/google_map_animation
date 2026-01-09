@@ -9,6 +9,7 @@ class AnimatedMarkersManager {
     required Duration duration,
     required this.onUpdateMarkers,
     required this.onRemoveMarkers,
+    required this.useBearingFromMarker,
   }) {
     // 16.67 ms per frame for 60 FPS (1000 ms / 60 FPS) ~= 16.67 ms
     totalFrames = (duration.inMilliseconds / 16.67).round();
@@ -20,6 +21,8 @@ class AnimatedMarkersManager {
 
   late final int totalFrames;
   late final AnimationController _animationController;
+
+  final bool useBearingFromMarker;
 
   final ValueChanged<Set<Marker>> onUpdateMarkers;
   final ValueChanged<Set<MarkerId>> onRemoveMarkers;
@@ -37,6 +40,7 @@ class AnimatedMarkersManager {
       final controller = _controllers[marker.markerId] ??= MarkerController(
         marker: marker,
         animationController: _animationController,
+        useBearingFromMarker: useBearingFromMarker,
       );
 
       controller.pushToQueue(marker);

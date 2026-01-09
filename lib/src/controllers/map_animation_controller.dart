@@ -18,6 +18,10 @@ final class MapAnimationController {
   /// Duration for marker animation transitions. Default is 2 second.
   final Duration markersAnimationDuration;
 
+  /// If true, uses the marker's rotation property as bearing.
+  /// If false, calculates bearing from movement direction. Default is false.
+  final bool useBearingFromMarker;
+
   MapAnimationController({
     required this.mapId,
     required this.vsync,
@@ -25,6 +29,7 @@ final class MapAnimationController {
     Set<AnimatedPolyline> polylines = const {},
     this.markersAnimationDuration = const Duration(milliseconds: 2000),
     this.markerListener,
+    this.useBearingFromMarker = true,
   }) {
     _initialize(markers, polylines);
   }
@@ -46,6 +51,7 @@ final class MapAnimationController {
       duration: markersAnimationDuration,
       onUpdateMarkers: _updateMarker,
       onRemoveMarkers: _removeMarker,
+      useBearingFromMarker: useBearingFromMarker,
     );
 
     // Initialize markers from widget properties

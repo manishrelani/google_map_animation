@@ -29,7 +29,7 @@ final class MapAnimationController {
     Set<AnimatedPolyline> polylines = const {},
     this.markersAnimationDuration = const Duration(milliseconds: 2000),
     this.markerListener,
-    this.useBearingFromMarker = true,
+    this.useBearingFromMarker = false,
   }) {
     _initialize(markers, polylines);
   }
@@ -69,19 +69,13 @@ final class MapAnimationController {
     // -- Polylines Initialization --
 
     // Set up the polylines animation manager
-    _animatedPolylineManager = AnimatedPolylineManager(
-      vsync: vsync,
-      polylineListener: _updatePolyline,
-    );
+    _animatedPolylineManager = AnimatedPolylineManager(vsync: vsync, polylineListener: _updatePolyline);
 
     // Add all polylines to animate
 
     for (var i in polylines) {
       if (i.polylineAnimator != null) {
-        _animatedPolylineManager.push(
-          polyline: i.polyline,
-          polylineAnimator: i.polylineAnimator!,
-        );
+        _animatedPolylineManager.push(polyline: i.polyline, polylineAnimator: i.polylineAnimator!);
       } else {
         // If no animation is provided, add the polyline directly to the map
         _polylines[i.polyline.polylineId] = i.polyline.clone();
@@ -207,17 +201,11 @@ final class MapAnimationController {
   }
 
   Future<void> _updateMarkersOnMap(Set<Marker> previous, Set<Marker> current) async {
-    GoogleMapsFlutterPlatform.instance.updateMarkers(
-      MarkerUpdates.from(previous, current),
-      mapId: mapId,
-    );
+    GoogleMapsFlutterPlatform.instance.updateMarkers(MarkerUpdates.from(previous, current), mapId: mapId);
   }
 
   Future<void> _updatePolylinesOnMap(Set<Polyline> previous, Set<Polyline> current) async {
-    GoogleMapsFlutterPlatform.instance.updatePolylines(
-      PolylineUpdates.from(previous, current),
-      mapId: mapId,
-    );
+    GoogleMapsFlutterPlatform.instance.updatePolylines(PolylineUpdates.from(previous, current), mapId: mapId);
   }
 
   void dispose() {

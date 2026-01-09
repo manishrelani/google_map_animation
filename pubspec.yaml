@@ -2,7 +2,7 @@ name: google_map_animation
 description: "A Flutter library for creating animated polylines and markers on Google Maps with smooth transitions and customizable effects."
 
 
-version: 0.0.1
+version: 0.0.2
 
 repository: https://github.com/manishrelani/google_map_animation
 issue_tracker: https://github.com/manishrelani/google_map_animation/issues
